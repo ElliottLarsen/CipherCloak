@@ -13,8 +13,8 @@ func main() {
     os.Exit(0)
   }
 
-  //plaintext := os.Args[1]
-  //key := os.Args[2]
+  plaintext := os.Args[1]
+  key := os.Args[2]
   port := os.Args[3]
   // Connect to the encrypt server.
   conn, err := net.Dial("tcp", "localhost:" + port)
@@ -24,5 +24,24 @@ func main() {
     os.Exit(1)
   }
   defer conn.Close()
+  // Send file names to the server.
+  fileNames := plaintext + " " + key
+  _, err = conn.Write([]byte(fileNames))
+  if err != nil {
+    fmt.Fprintln(os.Stderr, "Error sending files to the server.")
+    fmt.Fprintln(os.Stderr, err)
+    os.Exit(1)
+  }
+
+  // Receive and print the encrypted text from the server.
+  buffer := make([]byte, 200000)
+  n, err := conn.Read(buffer)
+  if err != nil {
+    fmt.Fprintln(os.Stderr, "Error receiving encrypted text from the server.")
+    fmt.Fprintln(os.Stderr, err)
+    os.Exit(1)
+  }
+
+  fmt.Fprintln(os.Stdin, string(buffer[:n]))
 
 }

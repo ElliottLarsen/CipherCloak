@@ -25,8 +25,8 @@ func main() {
   }
   defer conn.Close()
   // Send file names to the server.
-  fileNames := plaintext + " " + key
-  _, err = conn.Write([]byte(fileNames))
+  file_names := plaintext + " " + key
+  _, err = conn.Write([]byte(file_names))
   if err != nil {
     fmt.Fprintln(os.Stderr, "Error sending files to the server.")
     fmt.Fprintln(os.Stderr, err)

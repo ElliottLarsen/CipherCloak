@@ -69,16 +69,43 @@ func encrypt_text(conn net.Conn) {
     fmt.Fprintln(os.Stderr, err)
     os.Exit(1)
   }
-  // This might not be needed since plaintext and key contain ASCII values.
-  //plaintext_content := string(plaintext)
-  //key_content := string (key)
 
-  // Remove line feed (ASCII 10) at the end of plaintext and key.
+  // Set up variables and remove line feed (ASCII 10) at the end of plaintext and key
+  const allowed_char string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+  var cipher string = ""
   plaintext = plaintext[:len(plaintext) - 1]
   key = key[:len(key) - 1]
+  var plaintext_len int = len(plaintext)
 
-  for i := 0; i < len(plaintext); i++ {
-    fmt.Println(plaintext[i])
+  // Encrypt plaintext using the key.
+  for i := 0; i < plaintext_len; i ++ {
+    var encrypt_idx int = 0
+    var idx_1 int = 0
+    var idx_2 int = 0
+    // If the character is a space, then idx_1 is 26 because " " is index 26 of the allowed_char array.
+    // If not, % by 65 because "A" in ASCII is 65 and using a % between a character and 65 will result in 
+    // the index of the letter in allowed_char.
+    if string(plaintext[i]) == " " {
+      idx_1 = 26
+    } else {
+      idx_1 = int(plaintext[i]) % 65
+    }
+    // Apply the same logic to the key.
+    if string(key[i]) == " " {
+      idx_2 = 26
+    } else {
+      idx_2 = int(key[i]) % 65
+    }
+    // Find the encrypt_idx.
+    encrypt_idx = (idx_1 + idx_2) % 27
+    // Get the corresponding character from allowed_char and add it to cipher.
+    cipher += string(allowed_char[encrypt_idx])
+  }
+  _, err = conn.Write([]byte(cipher))
+  if err != nil {
+    fmt.Println("Error sending cipher to the client.")
+    fmt.Println(err)
+    os.Exit(1)
   }
 }
 

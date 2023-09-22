@@ -2,7 +2,7 @@ package main
 
 import (
   "fmt"
-  //"io/ioutil"
+  "io/ioutil"
   "net"
   "os"
 )
@@ -54,9 +54,34 @@ func encrypt_text(conn net.Conn) {
 
   file_names := string(buffer[:n])
   file_names_arr := split_file_names(file_names)
-  fmt.Println(file_names_arr)
-  // TODO
+
+  // Open plaintext and key files.
+  plaintext, err := ioutil.ReadFile(file_names_arr[0])
+  if err != nil {
+    fmt.Fprintln(os.Stderr, "Error reading plaintext file.")
+    fmt.Fprintln(os.Stderr, err)
+    os.Exit(1)
+  }
+
+  key, err := ioutil.ReadFile(file_names_arr[1])
+  if err != nil {
+    fmt.Fprintln(os.Stderr, "Error reading key file.")
+    fmt.Fprintln(os.Stderr, err)
+    os.Exit(1)
+  }
+  // This might not be needed since plaintext and key contain ASCII values.
+  //plaintext_content := string(plaintext)
+  //key_content := string (key)
+
+  // Remove line feed (ASCII 10) at the end of plaintext and key.
+  plaintext = plaintext[:len(plaintext) - 1]
+  key = key[:len(key) - 1]
+
+  for i := 0; i < len(plaintext); i++ {
+    fmt.Println(plaintext[i])
+  }
 }
+
 
 func split_file_names(file_names string) []string {
   file_names_arr := make([]string, 0)

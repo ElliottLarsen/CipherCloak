@@ -42,6 +42,6 @@ func main() {
     os.Exit(1)
   }
 
-  fmt.Fprintln(os.Stdin, string(buffer[:n]))
+  fmt.Println(string(buffer[:n]))
 
 }

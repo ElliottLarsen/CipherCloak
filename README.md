@@ -3,7 +3,10 @@ This program encrypts and decrypts plaintext using a system similar to the [one-
 ## Technologies
 * Go
 ## GIF Walkthrough
-
+<p>
+<image src = "ciphercloak_gif.gif" title = "CipherCloak GIF"><br>
+</p>
+<br>
 ## How to Run
 * Clone this repository.
 * `cd` into the directory.

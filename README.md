@@ -1,5 +1,5 @@
 # CipherCloak
-This program encrypts and decrypts plaintext using a system similar to the one-time pad.  
+This program encrypts and decrypts plaintext using a system similar to the [one-time pad](https://en.wikipedia.org/wiki/One-time_pad).  
 ## Technologies
 * Go
 ## GIF Walkthrough

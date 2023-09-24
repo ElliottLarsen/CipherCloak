@@ -3,6 +3,7 @@ rm -f keymaker
 rm -f key70000
 rm -f encrypt_client
 rm -f encrypt_server
-rm -f ciphertext1
+rm -f ciphertext*
 rm -f decrypt_client
 rm -f decrypt_server
+rm -f plaintext*_decrypted

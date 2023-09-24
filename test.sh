@@ -1,7 +1,10 @@
 echo=/bin/echo
 
 encryptport=$((RANDOM % 60000 + 1025))
+decryptport=$((RANDOM % 60000 + 1025))
 ./encrypt_server $encryptport &
+./decrypt_server $decryptport &
+
 sleep 1
 
 ${echo}
@@ -101,4 +104,58 @@ else
 	tput setaf 1
 	echo "Incorrect length."
 	tput sgr0
+fi
+
+${echo}
+${echo} "______________________________"
+${echo} "Ciphertext1 must look encrypted."
+cat ciphertext1
+if [ -s ciphertext1 ] && ! grep '[^A-Z ]' ciphertext1 &>/dev/null
+then
+  tput bold
+  tput setaf 2
+  echo "Ciphertext1 looks encrypted."
+  tput sgr0
+else
+  tput bold
+  tput setaf 1
+  echo "Ciphertext 1 does not look encrypted."
+  tput sgr0
+fi
+
+${echo}
+${echo} "______________________________"
+${echo} "Testing ./decrypt_client ciphertext1 key70000 $decryptport > plaintext1_decrypted"
+./decrypt_client ciphertext1 key70000 $decryptport > plaintext1_decrypted
+${echo} "Plaintext1_decrypted:q should exist."
+if [ -s plaintext1_decrypted ]
+then
+  tput bold
+  tput setaf 2
+  echo "plaintext1_decrypted exists."
+  tput sgr0
+else
+  tput bold
+  tput setaf 1
+  echo "plaintext1_decrypted does not exit."
+  tput sgr0
+fi
+
+${echo}
+${echo} "______________________________"
+${echo} "Testing cmp plaintext1 plaintext1_decypted"
+${echo} "plaintext1 should be identical to plaintext1_decrypted."
+cmp plaintext1 plaintext1_decrypted
+ret=$?
+if [ $ret -eq 0 ]
+then
+  tput bold
+  tput setaf 2
+  echo "Successful decryption."
+  tput sgr0
+else
+  tput bold
+  tput setaf 1
+  echo "Decrypted text does not match plaintext1."
+  tput sgr0
 fi

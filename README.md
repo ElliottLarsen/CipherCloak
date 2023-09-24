@@ -32,4 +32,8 @@ This program encrypts and decrypts plaintext using a system similar to the [one-
 * Run `make` to complie the project.
 * Run `./test.sh` to run the test script.
 * If you want to run a clean-up script, run `chmod +x clear.sh` followed by `./clear.sh`.
-
+## Contact
+Elliott Larsen
+* Email elliottlrsn@gmail.com
+* GitHub [@elliottlarsen](https://github.com/elliottlarsen)
+* LinkedIn [@elliottlarsen](https://www.linkedin.com/in/elliottlarsen)
